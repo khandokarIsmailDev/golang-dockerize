@@ -1,17 +1,19 @@
-FROM golang:1.19.2-bullseye
- 
+FROM golang:1.22.2-alpine3.19
+
 WORKDIR /app
- 
-# Effectively tracks changes within your go.mod file
+
+# Copy the Go Modules manifests
 COPY go.mod .
- 
+COPY go.sum .
+
+# Download dependencies
 RUN go mod download
- 
-# Copies your source code into the app directory
-COPY main.go .
- 
-RUN go mod -o /godocker
- 
+
+
+COPY . .
+
+RUN go build -o main .
+
 EXPOSE 8080
- 
-CMD [ “/godocker” ]
+
+CMD ["./main"]
