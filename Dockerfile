@@ -1,19 +1,27 @@
-FROM golang:1.22.2-alpine3.19
+FROM golang:1.21-alpine AS builder 
 
-WORKDIR /app
+ENV CGO_ENABLED=0
+ENV GOOS=linux
+ENV PORT=3200
 
-# Copy the Go Modules manifests
+WORKDIR /home/project
+
 COPY go.mod .
 COPY go.sum .
 
-# Download dependencies
 RUN go mod download
-
 
 COPY . .
 
-RUN go build -o main .
+RUN go build -o ./go_server
 
-EXPOSE 8080
+# RUN ./go_server
 
-CMD ["./main"]
+CMD [ "./go_server" ] 
+
+# FROM nginx:1.25 as Final
+
+# WORKDIR /usr/share/nginx/html/
+# COPY --from=builder /home/project/go_server ./
+
+# CMD [ "./go_server" ]
