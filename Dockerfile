@@ -3,7 +3,7 @@ ARG GO_VERSION=1.19
 
 #Define Environment variable for cross platform c compilation
 ENV CGO_ENABLED=0
-LABEL author ="Kawsar Ahmed"
+LABEL author ="khandokar ismail"
 
 #Define default working directory
 WORKDIR /app
